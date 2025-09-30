@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dental Team: Roles & Responsibilities</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font family -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        
+        /* Tab Button Styling (Styled like lozenges) */
+        .tab-button {
+            transition: all 0.2s ease;
+            color: #532A8C; /* Default text color: Dark Purple */
+            text-align: left;
+            border-radius: 9999px; /* Pill shape */
+        }
+
+        /* Hover style for non-active tabs: Light grey background, Dark purple text */
+        .tab-button:hover {
+            background-color: #F2F2F2; /* Light Grey */
+            color: #532A8C; 
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); 
+        }
+
+        /* Active tab lozenge style: Dark purple background, White text */
+        .tab-button.active {
+            background-color: #532A8C; /* Dark Purple */
+            color: white !important; 
+            font-weight: 700; 
+        }
+
+        /* Hover style for ACTIVE tabs: Medium purple background, White text */
+        .tab-button.active:hover {
+            background-color: #9D8ABB; /* Medium Purple for hover feedback on active link */
+            color: white !important; 
+        }
+
+        /* Styling for the role card content */
+        .role-content-panel {
+            min-height: 500px; /* Ensure content area has a minimum height */
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Main Content Container: Centered and constrained for readability -->
+    <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8"> 
+        
+        <main>
+            
+            <header class="mb-10 pb-4 border-b border-gray-300">
+                <h1 class="text-4xl font-extrabold text-[#532A8C] mb-2">The Dental Team: Roles and Responsibilities</h1>
+                <p class="text-lg text-gray-600">Use the menu on the left to select a role and view its specific scope and responsibilities.</p>
+            </header>
+
+            <!-- Interactive Tabs Layout: Grid or Flex for large screens -->
+            <div class="lg:flex lg:space-x-8">
+                
+                <!-- Left: Navigation (Tabs) Area -->
+                <nav class="lg:w-72 flex-shrink-0 mb-6 lg:mb-0">
+                    <h2 class="text-xl font-bold mb-4 text-[#532A8C] hidden lg:block">Select a Role</h2>
+                    
+                    <!-- Tab Buttons (Vertical List) -->
+                    <div id="tab-list" class="space-y-2 bg-white p-4 rounded-xl shadow-md">
+                        <!-- Tab buttons will be populated dynamically by JavaScript -->
+                    </div>
+                </nav>
+
+                <!-- Right: Content Display Area -->
+                <section id="roles-container" class="flex-1 role-content-panel bg-white rounded-xl shadow-lg border border-gray-200 p-8">
+                    <!-- The active role card content will be displayed here -->
+                </section>
+
+            </div>
+
+            <!-- Key Principle -->
+            <div class="mt-12 p-6 bg-[#C3ACE8] border-l-4 border-[#532A8C] rounded-r-lg shadow-md">
+                <h3 class="text-xl font-semibold text-[#532A8C] mb-2">Key Principle for the Dental Assistant Role</h3>
+                <p class="text-gray-700">Your role is defined by supporting the clinician's activities while maintaining the highest standard of infection control. Understanding the limits of your own scope and the specific responsibilities of each clinician is critical for effective teamwork and legal compliance.</p>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Data structure defining the roles
+        const dentalRoles = [
+            {
+                id: 'dentist',
+                title: 'Dentist (General Practitioner)',
+                description: 'The primary clinician responsible for the diagnosis, prevention, and treatment of conditions affecting the oral cavity, teeth, and associated structures. Their scope includes comprehensive restorative procedures, fixed and removable prosthodontics, minor surgical interventions, and the overall coordination and oversight of patient treatment planning.'
+            },
+            {
+                id: 'assistant',
+                title: 'Dental Assistant (DA)',
+                description: 'The pivotal support member responsible for providing chairside assistance to the clinician, preparing and maintaining the clinical area, managing instrument sterilisation and infection control protocols, processing radiographs, and ensuring optimal patient comfort and procedural flow.'
+            },
+            {
+                id: 'specialist',
+                title: 'Dental Specialist',
+                description: 'A practitioner who has completed extensive additional postgraduate qualifications in a focused field (e.g., Orthodontics, Periodontics, Endodontics). They manage complex and advanced cases specifically within their area of specialisation, requiring a referral pathway from a General Practitioner.'
+            },
+            {
+                id: 'oht',
+                title: 'Oral Health Therapist (OHT) / Dental Hygienist',
+                description: 'Focuses predominantly on preventative oral health measures and the maintenance of periodontal health. Responsibilities include comprehensive scaling and root planing, patient education, the application of topical preventative agents, and, within the scope of an OHT, basic restorative procedures for children and adolescents.'
+            },
+            {
+                id: 'therapist',
+                title: 'Dental Therapist',
+                description: 'A clinician focused on providing routine dental care to **children and adolescents**, which includes examinations, restorations (fillings), minor extractions of primary (baby) teeth, and preventative procedures, often working collaboratively with the Dentist and Oral Health Therapist.'
+            },
+            {
+                id: 'radiographer',
+                title: 'Dental Radiographer',
+                description: 'A professional specifically trained in the operation of radiographic equipment to capture and process dental X-rays (including OPGs, CBCT scans, and cephalometric images), ensuring image quality and adherence to radiation safety protocols to aid in diagnosis.'
+            },
+            {
+                id: 'technician',
+                title: 'Dental Technician',
+                description: 'A laboratory-based professional who constructs custom-made dental appliances and prostheses (e.g., crowns, bridges, and orthodontic devices). Their work is performed remotely based exclusively on prescriptions and impressions provided by a registered clinician.'
+            },
+            {
+                id: 'prosthetist',
+                title: 'Dental Prosthetist',
+                description: 'Specialises in the design, construction, repair, and direct fitting of removable dental prostheses, such as full and partial dentures, directly to the patient (without a Dentist\'s prescription for the entire process).'
+            },
+            {
+                id: 'practice_manager',
+                title: 'Practice Manager',
+                description: 'Oversees the administrative and operational efficiency of the clinic. This senior role involves human resources management (staffing, performance), financial oversight (budgeting, reporting), inventory control, regulatory compliance, and strategic planning for the practice\'s growth and success.'
+            },
+            {
+                id: 'receptionist',
+                title: 'Dental Receptionist',
+                description: 'The first point of contact for patients, responsible for managing the front-of-house operations. Key duties include scheduling appointments, processing payments, managing patient records, handling correspondence, facilitating patient flow, and ensuring a welcoming and efficient clinic environment.'
+            }
+        ];
+
+        // Map role IDs to the content fetch IDs of the uploaded images
+        // NOTE: These fetch IDs are specific to the Canvas environment and must be updated 
+        // with permanent URLs (e.g., hosted image assets) when deployed externally.
+        const roleImageMap = {
+            'dentist': {
+                src: "uploaded:Dentist.jpg-c6d6322a-7b87-48d9-b8b4-4ca1c6eb5114",
+                alt: "A Dentist examining a patient"
+            },
+            'assistant': { 
+                src: "uploaded:Dental Assistant.jpg-891f70a1-8dcd-43ad-a140-029b410ea072",
+                alt: "A Dental Assistant providing chairside support"
+            },
+            'specialist': { 
+                src: "uploaded:Dental Specialist 2.jpg-717fa021-d9db-4058-b019-371425aaf311",
+                alt: "A Dental Specialist consulting a patient"
+            },
+            'oht': {
+                src: "uploaded:Dental Hygienist.jpg-b803f1c6-9dbf-4df8-89c2-799704140fcf",
+                alt: "An Oral Health Therapist or Dental Hygienist working with a patient"
+            },
+            'therapist': {
+                src: "uploaded:Dental Therapist.jpg-15c68659-784c-4c69-abf5-23e93950bb3c",
+                alt: "A Dental Therapist treating a child"
+            },
+            'radiographer': {
+                src: "uploaded:Dental Radiographer.jpg-12c03b98-91d1-481f-948a-42353a1f0e1a",
+                alt: "A Dental Radiographer operating an X-ray machine"
+            },
+            'technician': {
+                src: "uploaded:Dental Technician.jpg-656c7ed9-c007-4c94-8728-1ab7d1b78a29",
+                alt: "A Dental Technician working in a laboratory"
+            },
+            'prosthetist': {
+                src: "uploaded:Dental Prosthetist.jpg-e5806ca7-e824-4fd1-9ee7-ae297ecb99ac",
+                alt: "A Dental Prosthetist taking an impression"
+            },
+            'practice_manager': {
+                src: "uploaded:Practice Manager.jpg-09f4c610-b061-4476-8618-363b3a540c87",
+                alt: "A Practice Manager reviewing documents"
+            },
+            'receptionist': {
+                src: "uploaded:Receptionist.jpg-b31c972f-c979-4f9f-a54a-d74d14280d9f",
+                alt: "A Dental Receptionist greeting a patient at the front desk"
+            }
+        };
+
+
+        const rolesContainer = document.getElementById('roles-container');
+        const tabList = document.getElementById('tab-list');
+        let roleContentMap = {}; 
+
+        /**
+         * Generates the HTML content for a single role card (hidden initially).
+         * @param {Object} role - The role data object.
+         * @returns {string} The HTML string for the content panel.
+         */
+        function createRoleContent(role) {
+            const imageInfo = roleImageMap[role.id];
+            let imageHtml = '';
+
+            if (imageInfo) {
+                // IMPORTANT: The image source uses Canvas environment fetch IDs. 
+                // These MUST be replaced with stable paths (e.g., /assets/images/...) 
+                // when deployed to a standard web server or GitHub Pages.
+                imageHtml = `
+                    <div class="mb-4 sm:mb-0 sm:w-1/3 md:w-1/4 flex-shrink-0 sm:mr-6">
+                        <img 
+                            src="${imageInfo.src}" 
+                            alt="${imageInfo.alt}" 
+                            class="w-full h-auto max-h-48 object-cover rounded-lg shadow-lg border border-gray-100"
+                            onerror="this.onerror=null; this.src='https://placehold.co/400x250/cbd5e1/475569?text=Image+Not+Found'"
+                        >
+                    </div>
+                `;
+            }
+
+            return `
+                <div id="${role.id}-content" class="role-card-content hidden">
+                    <div class="flex justify-between items-center w-full pb-4 mb-4 border-b border-gray-100">
+                        <h2 class="text-3xl font-bold text-[#532A8C]">${role.title}</h2>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-start">
+                        ${imageHtml}
+                        <div class="flex-1">
+                            <p class="text-base leading-relaxed text-gray-700">${role.description}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /**
+         * Shows the content for the selected role and updates the active tab.
+         * @param {string} roleId - The ID of the role to show (e.g., 'dentist').
+         */
+        function showRole(roleId) {
+            // 1. Hide all content panels
+            document.querySelectorAll('.role-card-content').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+
+            // 2. Deactivate all tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // 3. Show the selected content panel
+            const activeContent = document.getElementById(`${roleId}-content`);
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+            }
+
+            // 4. Activate the corresponding tab
+            const activeTab = document.querySelector(`.tab-button[data-role-id="${roleId}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+        }
+
+
+        /**
+         * Renders the tab buttons and hidden content panels.
+         */
+        function renderRoles() {
+            rolesContainer.innerHTML = ''; 
+            tabList.innerHTML = '';
+            
+            let firstRoleId = null;
+
+            dentalRoles.forEach((role, index) => {
+                if (index === 0) {
+                    firstRoleId = role.id;
+                }
+
+                // 1. Create and append hidden content panel
+                rolesContainer.insertAdjacentHTML('beforeend', createRoleContent(role));
+
+                // 2. Create and append tab button
+                const tabButtonHtml = `
+                    <button type="button" 
+                            class="tab-button w-full px-4 py-2 font-medium" 
+                            data-role-id="${role.id}">
+                        ${role.title}
+                    </button>
+                `;
+                tabList.insertAdjacentHTML('beforeend', tabButtonHtml);
+            });
+
+            // 3. Attach event listener to the tab list container
+            tabList.addEventListener('click', (event) => {
+                const button = event.target.closest('.tab-button');
+                if (button) {
+                    const roleId = button.getAttribute('data-role-id');
+                    showRole(roleId);
+                }
+            });
+
+            // 4. Initialize by showing the first role
+            if (firstRoleId) {
+                showRole(firstRoleId);
+            }
+        }
+
+        // Initial rendering of the components
+        window.onload = renderRoles;
+    </script>
+</body>
+</html>
